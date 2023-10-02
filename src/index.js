@@ -1,3 +1,4 @@
+var methodOverride = require('method-override')
 const express = require('express')
 const path = require('path')
 const app = express()
@@ -20,14 +21,19 @@ app.use(
 )
 app.use(express.json())
 
+app.use(methodOverride('_method'))
+
 //HTTP logger
-app.use(morgan('combined'))
+//app.use(morgan('combined'))
 
 //template engine
 app.engine(
     'hbs',
     handlebars.engine({
         extname: 'hbs',
+        helpers: {
+            sum: (a, b) => a + b,
+        },
     }),
 )
 app.set('view engine', 'hbs')
